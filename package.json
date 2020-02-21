@@ -1,0 +1,31 @@
+{
+  "name": "device-multiple-node-upgrade",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "adm-zip": "^0.4.14",
+    "ajv": "^6.11.0",
+    "amqplib": "^0.5.5",
+    "axios": "^0.19.2",
+    "forever-monitor": "^2.0.0",
+    "mkdirp": "^1.0.3"
+  },
+  "bin": "app_device.js",
+  "pkg": {
+    "assets": [
+      "download.js",
+      "config.js",
+      "Process.js",
+      "ProcessManager.js",
+      "utils.js",
+      "node_modules/**/*"
+    ]
+  }
+}
