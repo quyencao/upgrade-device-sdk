@@ -5,7 +5,7 @@ module.exports = {
   STOP_DEPLOY_MODEL: "stop_deploy_model",
   STOP_DEPLOY_SOURCE: "stop_deploy_source",
   STOP_RUN_CODE: "stop_run_code",
-  PUBLISH_QUEUE: "publish_queue",
+  PUBLISH_QUEUE: "device_response",
   BASE_SOURCE_DIRECTORY: "/twain/source",
   BASE_MODEL_DIRECTORY: "/twain/model",
   BASE_TMP_SOURCE_DIRECTORY: "/twain/tmp/source",

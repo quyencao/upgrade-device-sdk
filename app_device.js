@@ -77,11 +77,67 @@ function connectRabbitMQ() {
 
                   pm.stopByUid(node, DEPLOY_MODEL);
 
+                  const onExitRunInDeployModel = function(code) {
+                    if (code !== 0) {
+                      publishMessage(ch, command, QUEUE, node, key, -1);
+                    }
+                  };
+
+                  const onExitInstallInDeployModel = function(code) {
+                    console.log("on exit install from outside", code);
+
+                    if (code === 0) {
+                      // publishMessage(ch, command, QUEUE, node, key, 0);
+
+                      pm.start(
+                        "twain.py",
+                        {
+                          uid: node,
+                          command: "python",
+                          max: 1,
+                          killTree: true,
+                          env: {
+                            SOURCE_DIRECTORY: `${BASE_SOURCE_DIRECTORY}/${node}`,
+                            MODEL_DIRECTORY: `${BASE_MODEL_DIRECTORY}/${node}`
+                          },
+                          cwd: `${BASE_SOURCE_DIRECTORY}/${node}`
+                        },
+                        RUN_CODE,
+                        { onExit: onExitRunInDeployModel }
+                      );
+                    } else {
+                      publishMessage(ch, command, QUEUE, node, key, -1);
+                    }
+                  };
+
                   const onExitDownloadModel = function(code) {
                     console.log("on exit download model from outside", code);
 
                     if (code === 0) {
                       publishMessage(ch, command, QUEUE, node, key, 0);
+
+                      pm.stopByUid(node, RUN_CODE);
+
+                      mkdirp.sync(`${BASE_SOURCE_DIRECTORY}/${node}`);
+                      mkdirp.sync(`${BASE_MODEL_DIRECTORY}/${node}`);
+
+                      pm.start(
+                        "install.sh",
+                        {
+                          uid: node,
+                          command: "bash",
+                          max: 1,
+                          killTree: true,
+                          env: {
+                            SOURCE_DIRECTORY: `${BASE_SOURCE_DIRECTORY}/${node}`,
+                            MODEL_DIRECTORY: `${BASE_MODEL_DIRECTORY}/${node}`
+                          },
+                          cwd: `${BASE_SOURCE_DIRECTORY}/${node}`
+                        },
+                        RUN_CODE,
+                        { onExit: onExitInstallInDeployModel }
+                      );
+
                     } else {
                       publishMessage(ch, command, QUEUE, node, key, -1);
                     }
@@ -111,11 +167,67 @@ function connectRabbitMQ() {
 
                   pm.stopByUid(node, DEPLOY_SOURCE);
 
+                  const onExitRunInDeploySource = function(code) {
+                    if (code !== 0) {
+                      publishMessage(ch, command, QUEUE, node, key, -1);
+                    }
+                  };
+
+                  const onExitInstallInDeploySource = function(code) {
+                    console.log("on exit install from outside", code);
+
+                    if (code === 0) {
+                      // publishMessage(ch, command, QUEUE, node, key, 0);
+
+                      pm.start(
+                        "twain.py",
+                        {
+                          uid: node,
+                          command: "python",
+                          max: 1,
+                          killTree: true,
+                          env: {
+                            SOURCE_DIRECTORY: `${BASE_SOURCE_DIRECTORY}/${node}`,
+                            MODEL_DIRECTORY: `${BASE_MODEL_DIRECTORY}/${node}`
+                          },
+                          cwd: `${BASE_SOURCE_DIRECTORY}/${node}`
+                        },
+                        RUN_CODE,
+                        { onExit: onExitRunInDeploySource }
+                      );
+                    } else {
+                      publishMessage(ch, command, QUEUE, node, key, -1);
+                    }
+                  };
+
                   const onExitDownloadSource = function(code) {
                     console.log("on exit download source from outside", code);
 
                     if (code === 0) {
                       publishMessage(ch, command, QUEUE, node, key, 0);
+
+                      pm.stopByUid(node, RUN_CODE);
+
+                      mkdirp.sync(`${BASE_SOURCE_DIRECTORY}/${node}`);
+                      mkdirp.sync(`${BASE_MODEL_DIRECTORY}/${node}`);
+
+                      pm.start(
+                        "install.sh",
+                        {
+                          uid: node,
+                          command: "bash",
+                          max: 1,
+                          killTree: true,
+                          env: {
+                            SOURCE_DIRECTORY: `${BASE_SOURCE_DIRECTORY}/${node}`,
+                            MODEL_DIRECTORY: `${BASE_MODEL_DIRECTORY}/${node}`
+                          },
+                          cwd: `${BASE_SOURCE_DIRECTORY}/${node}`
+                        },
+                        RUN_CODE,
+                        { onExit: onExitInstallInDeploySource }
+                      );
+
                     } else {
                       publishMessage(ch, command, QUEUE, node, key, -1);
                     }
