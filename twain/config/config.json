@@ -1,5 +1,7 @@
 {
   "code": "LLLOOOSSSQQ",
   "host": "54.226.145.124",
-  "port": 5672
+  "port": 5672,
+  "source_directory": "/home/quyencm/Music/test/source",
+  "model_directory": "/home/quyencm/Music/test/model"
 }
