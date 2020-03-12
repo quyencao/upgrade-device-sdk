@@ -1,7 +1,7 @@
 {
-  "code": "LLLOOOSSSQQ",
+  "code": "123456",
   "host": "54.226.145.124",
   "port": 5672,
-  "source_directory": "/home/quyencm/Music/test/source",
-  "model_directory": "/home/quyencm/Music/test/model"
+  "source_directory": "/home/quyencm/catkin_ws/src",
+  "model_directory": "/home/quyencm/model"
 }
