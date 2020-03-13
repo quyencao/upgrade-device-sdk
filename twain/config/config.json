@@ -1,7 +1,7 @@
 {
-  "code": "123456",
+  "code": "QQDKKJHDIAJD",
   "host": "54.226.145.124",
   "port": 5672,
-  "source_directory": "/home/quyencm/catkin_ws/src",
-  "model_directory": "/home/quyencm/model"
+  "source_directory": "/twain/source",
+  "model_directory": "/twain/model"
 }
