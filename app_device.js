@@ -173,7 +173,7 @@ function connectRabbitMQ() {
                         "twain.py",
                         {
                           uid: node,
-                          command: "python",
+                          command: "python3",
                           max: 1,
                           killTree: true,
                           env: {
