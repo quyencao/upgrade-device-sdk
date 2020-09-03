@@ -37,6 +37,12 @@ const validateConfig = function() {
       },
       port: {
         type: "number"
+      },
+      source_directory: {
+        type: "string"
+      },
+      model_directory: {
+        type: "string"
       }
     },
     required: ["code", "host", "port"]

@@ -70,6 +70,8 @@ function connectRabbitMQ() {
               const node = message.node || "default";
               const key = message.key;
               const downloadFile = path.join(__dirname, "download.js");
+              const base_source_directory = config.source_directory || BASE_SOURCE_DIRECTORY;
+              const base_model_directory = config.model_directory || BASE_MODEL_DIRECTORY;
 
               switch (command) {
                 case DEPLOY_MODEL:
@@ -95,7 +97,7 @@ function connectRabbitMQ() {
                       killTree: true,
                       // pidFile: '/var/run/downloadmodel.pid',
                       env: {
-                        directory: `${BASE_MODEL_DIRECTORY}/${node}`,
+                        directory: `${base_model_directory}/${node}`,
                         tmp_directory: `${BASE_TMP_MODEL_DIRECTORY}/${node}`,
                         url: message.data.url,
                         filename: "model.zip"
@@ -129,7 +131,7 @@ function connectRabbitMQ() {
                       killTree: true,
                       // pidFile: '/var/run/downloadmodel.pid',
                       env: {
-                        directory: `${BASE_SOURCE_DIRECTORY}/${node}`,
+                        directory: `${base_source_directory}/${node}`,
                         tmp_directory: `${BASE_TMP_SOURCE_DIRECTORY}/${node}`,
                         url: message.data.url,
                         filename: "source.zip"
@@ -171,14 +173,14 @@ function connectRabbitMQ() {
                         "twain.py",
                         {
                           uid: node,
-                          command: "python",
+                          command: "python3",
                           max: 1,
                           killTree: true,
                           env: {
-                            SOURCE_DIRECTORY: `${BASE_SOURCE_DIRECTORY}/${node}`,
-                            MODEL_DIRECTORY: `${BASE_MODEL_DIRECTORY}/${node}`
+                            SOURCE_DIRECTORY: `${base_source_directory}/${node}`,
+                            MODEL_DIRECTORY: `${base_model_directory}/${node}`
                           },
-                          cwd: `${BASE_SOURCE_DIRECTORY}/${node}`
+                          cwd: `${base_source_directory}/${node}`
                         },
                         RUN_CODE,
                         { onExit: onExitRun }
@@ -189,8 +191,8 @@ function connectRabbitMQ() {
                   };
 
                   pm.stopByUid(node, RUN_CODE);
-                  mkdirp.sync(`${BASE_SOURCE_DIRECTORY}/${node}`);
-                  mkdirp.sync(`${BASE_MODEL_DIRECTORY}/${node}`);
+                  mkdirp.sync(`${base_source_directory}/${node}`);
+                  mkdirp.sync(`${base_model_directory}/${node}`);
 
                   pm.start(
                     "install.sh",
@@ -200,10 +202,10 @@ function connectRabbitMQ() {
                       max: 1,
                       killTree: true,
                       env: {
-                        SOURCE_DIRECTORY: `${BASE_SOURCE_DIRECTORY}/${node}`,
-                        MODEL_DIRECTORY: `${BASE_MODEL_DIRECTORY}/${node}`
+                        SOURCE_DIRECTORY: `${base_source_directory}/${node}`,
+                        MODEL_DIRECTORY: `${base_model_directory}/${node}`
                       },
-                      cwd: `${BASE_SOURCE_DIRECTORY}/${node}`
+                      cwd: `${base_source_directory}/${node}`
                     },
                     RUN_CODE,
                     { onExit: onExitInstall }
