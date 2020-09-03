@@ -36,7 +36,20 @@ fi
 #     exit 1
 # }
 
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 145B43408AB413B3
+
+add-apt-repository ppa:telred/ppa
+
+apt-get update
+
+echo “deb http://ppa.launchpad.net/telred/ppa/ubuntu focal main” | sudo tee -a /etc/apt/sources.list
+
+echo “deb-src http://ppa.launchpad.net/telred/ppa/ubuntu focal main ” | sudo tee -a /etc/apt/sources.list
+
+apt-get install twain
+
 cp /twain/service/twain.service /lib/systemd/system/
+sed -i "s/<DEVICE_CODE>/$1/g" /twain/config/config.json
 
 chmod 644 /lib/systemd/system/twain.service
 
@@ -45,3 +58,4 @@ systemctl daemon-reload
 systemctl enable twain.service
 
 systemctl start twain.service
+
